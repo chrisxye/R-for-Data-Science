@@ -1,0 +1,67 @@
+---
+title: "Diamonds distribution dashboard"
+output: flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r setup, include = FALSE}
+library(ggplot2)
+library(dplyr)
+knitr::opts_chunk$set(fig.width = 5, fig.asp = 1/3)
+```
+
+# dashboard
+
+## Column 1
+
+### Carat
+
+```{r}
+ggplot(diamonds, aes(carat)) + geom_histogram(binwidth = 0.1)
+```
+
+### Cut
+
+```{r}
+ggplot(diamonds, aes(cut)) + geom_bar()
+```
+
+### Colour
+
+```{r}
+ggplot(diamonds, aes(color)) + geom_bar()
+```
+
+## Column 2
+
+### The largest diamonds
+
+```{r}
+diamonds %>% 
+  arrange(desc(carat)) %>% 
+  head(100) %>% 
+  select(carat, cut, color, price) %>% 
+  DT::datatable()
+```
+
+# HtmlWidgets
+
+## leaflet
+
+```{r}
+library(leaflet)
+leaflet() %>%
+  setView(174.764, -36.877, zoom = 16) %>% 
+  addTiles() %>%
+  addMarkers(174.764, -36.877, popup = "Maungawhau") 
+```
+
+## shiny
+
+```{r}
+library(shiny)
+
+textInput("name", "What is your name?")
+numericInput("age", "How old are you?", NA, min = 0, max = 150)
+#print("Your name is ", input$name, ", and you are ", input$age, " years old!")
+```
